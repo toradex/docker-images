@@ -1,10 +1,10 @@
-FROM bshibley/debian-xorg:buster 
+FROM bshibley/ubuntu-xorg:bionic
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
-    lxde-core \
-    lxterminal \
-    lxtask \
-    lxrandr \
-    leafpad \
-    epiphany-browser \
+    lxqt-core \
+    qterminal \
+    qps \
+    featherpad \
+    openbox \
+    falkon \
     && apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*

@@ -1,20 +1,31 @@
-FROM resin/armv7hf-debian:stretch
+FROM resin/armv7hf-debian:buster
 
 LABEL io.resin.device-type="apalis-imx6q"
 
-RUN apt-get update && apt-get upgrade && apt-get install -y --no-install-recommends \
-		less \
-		kmod \
-		nano \
-                vim \
-		net-tools \
-		ifupdown \	
-		iputils-ping \	
-		i2c-tools \
-		usbutils \
-                xorg \
-                xinput \
-                xinput-calibrator \
-                evtest
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+    apt-utils \
+    && apt-mark hold dash && apt-get -y upgrade && apt-mark unhold dash \
+    && apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+    vim-tiny \
+    less \
+    kmod \
+    wget \
+    usbutils \
+    desktop-base \
+    debconf \
+    udev \
+    && apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+    xserver-xorg-core \
+    xinit \
+    xserver-xorg-input-libinput \
+    xserver-xorg-video-fbdev \
+    dbus-x11 \
+    suckless-tools \
+    && apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+
+ENV DISPLAY :0
+ENV INITSYSTEM 1
