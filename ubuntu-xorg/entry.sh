@@ -82,9 +82,9 @@ function init_systemd()
 		printf '%q="%q"\n' "$var" "${!var}"
 	done > /etc/docker.env
 
-	printf '#!/bin/bash\n exec ' > /etc/resinApp.sh
-	printf '%q ' "$@" >> /etc/resinApp.sh
-	chmod +x /etc/resinApp.sh
+	printf '#!/bin/bash\n exec ' > /etc/app.sh
+	printf '%q ' "$@" >> /etc/app.sh
+	chmod +x /etc/app.sh
 
 	mkdir -p /etc/systemd/system/launch.service.d
 	cat <<-EOF > /etc/systemd/system/launch.service.d/override.conf
