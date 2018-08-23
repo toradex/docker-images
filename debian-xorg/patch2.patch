@@ -1,0 +1,33 @@
+From ee5a82356aec19a56e956990ab1caf2c8ffe19e6 Mon Sep 17 00:00:00 2001
+From: Ben Clouser <ben.clouser@toradex.com>
+Date: Tue, 21 Aug 2018 16:35:06 +0200
+Subject: [PATCH] etnaviv: Prevent seg-fault when non-etnaviv card is present
+
+Signed-off-by: Ben Clouser <ben.clouser@toradex.com>
+---
+ Depends on patch from stefan@agner.ch: "etnaviv: use different error code"
+ etnaviv/etnadrm_module.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/etnaviv/etnadrm_module.c b/etnaviv/etnadrm_module.c
+index 5e97cee..ced2cea 100644
+--- a/etnaviv/etnadrm_module.c
++++ b/etnaviv/etnadrm_module.c
+@@ -27,8 +27,12 @@ static pointer etnadrm_setup(pointer module, pointer opts, int *errmaj,
+ 		return (pointer) 1;
+ 	}
+ 
+-	*errmaj = LDR_MODSPECIFIC;
+-	*errmin = 0;
++	if(errmaj){
++		*errmaj = LDR_MODSPECIFIC;
++	}
++	if(errmin){
++		*errmin = 0;
++	}
+ 
+ 	return NULL;
+ }
+-- 
+2.7.4
+

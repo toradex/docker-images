@@ -1,0 +1,85 @@
+Delivered-To: bclouse91@gmail.com
+Received: by 2002:adf:dc0e:0:0:0:0:0 with SMTP id t14-v6csp732358wri;
+        Fri, 17 Aug 2018 06:55:04 -0700 (PDT)
+X-Google-Smtp-Source: AA+uWPzHSUbQygqoGgF9yWk6TkUQIv8dwn1wp4xJ7/TO+qOslgom9V1tnR8ggzVVQxmbqttap+we
+X-Received: by 2002:a50:b7db:: with SMTP id i27-v6mr42672950ede.284.1534514104943;
+        Fri, 17 Aug 2018 06:55:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1534514104; cv=none;
+        d=google.com; s=arc-20160816;
+        b=q3qZ5KxLn0ZRWEfAq8af5+cShdPX59AqqS2lLl1L22USQKdaS65Ur6izCz+Q/6Z6oW
+         n8ujrj7NXBh2bd2OOhNOWxGkKzJ7S9nrDz0iiCFfb0vrQSCLCNkNK6wGMLGkhLOBiQoL
+         VIrsEbUqGbcpY6JsG7+7B1B/zx8Sinu5EBzLTiTC4CGh9UhLrc1v19ymL2RdKpUsRc50
+         bLhNKLPVLhP2uq9LUMEPh6tF8ky/LDp5rckEF+W2H1/0t4Kjq/Zjf23mYPnveVpKpDD1
+         FolWDMleLSPpk+MwJAQBSo7774/Kj5gMs02u3zc0UIa6jcvlWO/z6g4VLT8x975FsL53
+         prIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :dkim-signature:arc-authentication-results;
+        bh=T0mOi7EAFPsfVWtmVmHEG7o2vcqxp/UC9XHgt220TmM=;
+        b=bKaGM8vGi6vxpL/Nu5VBWS+q84E0KNFcYA4S6+S7MiRABV85fo7tsiq/evZSAUNvZQ
+         gupSQ4Y3E/kNnjnkTmwUiCSPqIVa30US5BgueNrmMAqk6HkrjTpVGJOxfwa2G8T+jrBA
+         BpY02aGYjZR5CGSKhsAHETvg7KH5cHuo7qFQ9ORYbYpEKtHlFtuC2rURbApnnfaxrBfP
+         At9CgyTWdflCH6JnicPd8RAnrAQJvbK9H1m0VVAkgVrzppfMdGuegdIjDmJuZFL0I8pO
+         3b/ZvxKwUwT8BfGrcNqF93CNOTEVhryAXn7TTu+Qo5ovbT2t+p5ackv2r5i2kMAgjJEc
+         bMPQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@agner.ch header.s=dkim header.b=R7HAXu0z;
+       spf=pass (google.com: domain of stefan@agner.ch designates 2a02:418:6a02::a2 as permitted sender) smtp.mailfrom=stefan@agner.ch
+Return-Path: <stefan@agner.ch>
+Received: from mail.kmu-office.ch (mail.kmu-office.ch. [2a02:418:6a02::a2])
+        by mx.google.com with ESMTPS id 88-v6si3721685edy.200.2018.08.17.06.55.04
+        for <bclouse91@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 17 Aug 2018 06:55:04 -0700 (PDT)
+Received-SPF: pass (google.com: domain of stefan@agner.ch designates 2a02:418:6a02::a2 as permitted sender) client-ip=2a02:418:6a02::a2;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@agner.ch header.s=dkim header.b=R7HAXu0z;
+       spf=pass (google.com: domain of stefan@agner.ch designates 2a02:418:6a02::a2 as permitted sender) smtp.mailfrom=stefan@agner.ch
+Received: from trochilidae.toradex.int (unknown [46.140.72.82])
+	by mail.kmu-office.ch (Postfix) with ESMTPSA id 394E75C08C1;
+	Fri, 17 Aug 2018 15:55:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
+	t=1534514104;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T0mOi7EAFPsfVWtmVmHEG7o2vcqxp/UC9XHgt220TmM=;
+	b=R7HAXu0zSstnrs5wr+dpasYG8IHPBvA4A+gX5YMD8IkeliMVtZ9CnOB6BGy17xiu0Nh5h0
+	FmsouLPxPegaMSxM3522Fb37/Xo0B/q2XaxVfZpjFbZVHaBB41DJ9rU+2MNSHfs1M78jgd
+	sJNzY682EdQUy5Dfg6lLvRspyF5gqd4=
+From: Stefan Agner <stefan@agner.ch>
+To: rmk@armlinux.org.uk
+Cc: etnaviv@lists.freedesktop.org,
+	bclouse91@gmail.com,
+	Stefan Agner <stefan@agner.ch>
+Subject: [xf86-video-armada][PATCH 2/2] etnaviv: use different error code
+Date: Fri, 17 Aug 2018 15:55:00 +0200
+Message-Id: <20180817135500.361-2-stefan@agner.ch>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180817135500.361-1-stefan@agner.ch>
+References: <20180817135500.361-1-stefan@agner.ch>
+
+The return code LDR_NOHARDWARE has been dropped in X.Org Server
+1.20. Use LDR_MODSPECIFIC instead.
+
+Signed-off-by: Stefan Agner <stefan@agner.ch>
+---
+ etnaviv/etnadrm_module.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/etnaviv/etnadrm_module.c b/etnaviv/etnadrm_module.c
+index 4307ff7..5e97cee 100644
+--- a/etnaviv/etnadrm_module.c
++++ b/etnaviv/etnadrm_module.c
+@@ -27,7 +27,7 @@ static pointer etnadrm_setup(pointer module, pointer opts, int *errmaj,
+ 		return (pointer) 1;
+ 	}
+ 
+-	*errmaj = LDR_NOHARDWARE;
++	*errmaj = LDR_MODSPECIFIC;
+ 	*errmin = 0;
+ 
+ 	return NULL;
+-- 
+2.18.0
+
