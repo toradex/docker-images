@@ -1,0 +1,79 @@
+From 9f5983b33cac9e7482c28fa10645c038a3efda3e Mon Sep 17 00:00:00 2001
+From: Ben Clouser <ben.clouser@toradex.com>
+Date: Thu, 23 Aug 2018 15:00:21 +0200
+Subject: [PATCH] Add debian packaging haxxx to create an installable package
+
+---
+ debian/rules                                     | 11 +++++------
+ debian/xserver-xorg-video-armada-etnadrm.install |  2 --
+ debian/xserver-xorg-video-armada-etnaviv.install |  1 -
+ debian/xserver-xorg-video-armada-vivante.install |  1 -
+ debian/xserver-xorg-video-armada.install         | 10 ++++++++--
+ 5 files changed, 13 insertions(+), 12 deletions(-)
+ delete mode 100644 debian/xserver-xorg-video-armada-etnadrm.install
+ delete mode 100644 debian/xserver-xorg-video-armada-etnaviv.install
+ delete mode 100644 debian/xserver-xorg-video-armada-vivante.install
+
+diff --git a/debian/rules b/debian/rules
+index 9566f7e..c84586b 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -3,13 +3,12 @@
+ 
+ DEB_HOST_MULTIARCH=
+ 
+-override_dh_auto_install:
+-	dh_auto_install --destdir=debian/tmp
+-
+-override_dh_install:
+-	find debian/tmp -name '*.la' -delete
+-	dh_install --fail-missing
++override_dh_auto_configure:
++	./autogen.sh --prefix=/usr --disable-vivante --disable-etnaviv --with-etnaviv-source="/sandbox/etna_viv"
+ 
++override_dh_auto_build:
++	make	
++	
+ override_dh_strip:
+ 	dh_strip --dbg-package=xserver-xorg-video-armada-dbg
+ 	dh_strip -s --remaining-packages
+diff --git a/debian/xserver-xorg-video-armada-etnadrm.install b/debian/xserver-xorg-video-armada-etnadrm.install
+deleted file mode 100644
+index 874f512..0000000
+--- a/debian/xserver-xorg-video-armada-etnadrm.install
++++ /dev/null
+@@ -1,2 +0,0 @@
+-usr/lib/xorg/modules/drivers/etnadrm*.so
+-
+diff --git a/debian/xserver-xorg-video-armada-etnaviv.install b/debian/xserver-xorg-video-armada-etnaviv.install
+deleted file mode 100644
+index a185f00..0000000
+--- a/debian/xserver-xorg-video-armada-etnaviv.install
++++ /dev/null
+@@ -1 +0,0 @@
+-usr/lib/xorg/modules/drivers/etnaviv*.so
+diff --git a/debian/xserver-xorg-video-armada-vivante.install b/debian/xserver-xorg-video-armada-vivante.install
+deleted file mode 100644
+index c34fd69..0000000
+--- a/debian/xserver-xorg-video-armada-vivante.install
++++ /dev/null
+@@ -1 +0,0 @@
+-usr/lib/xorg/modules/drivers/vivante*.so
+diff --git a/debian/xserver-xorg-video-armada.install b/debian/xserver-xorg-video-armada.install
+index 93c8976..345ae67 100644
+--- a/debian/xserver-xorg-video-armada.install
++++ b/debian/xserver-xorg-video-armada.install
+@@ -1,2 +1,8 @@
+-usr/lib/xorg/modules/drivers/*_drv.so
+-usr/share/man
++## Armada xorg modules
++src/.libs/armada_drv.so /usr/lib/xorg/modules/drivers/
++src/armada_drv.la /usr/lib/xorg/modules/drivers/
++
++### ETNA gpu modules
++etnaviv/.libs/etnadrm_gpu.so /usr/lib/xorg/modules/drivers/
++etnaviv/etnadrm_gpu.la /usr/lib/xorg/modules/drivers/
++
+-- 
+2.7.4
+
