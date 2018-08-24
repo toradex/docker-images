@@ -1,4 +1,4 @@
-FROM bclouser/debian-xorg:buster 
+FROM bclouser/debian-xorg-imx7:buster
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
     lxde-core \
