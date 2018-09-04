@@ -27,5 +27,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
     suckless-tools \
     && apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
+COPY xorg.conf /etc/X11/xorg.conf
+
 ENV DISPLAY :0
 ENV INITSYSTEM 1
