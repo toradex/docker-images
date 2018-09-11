@@ -1,5 +1,6 @@
 FROM bclouser/debian-builder AS build
 
+RUN [ "cross-build-start" ]
 
 ### Phase 1: Build the debian packages needed for Armada DRM
 RUN mkdir /sandbox
@@ -24,12 +25,14 @@ COPY /xf86-video-armada-patches/* /sandbox/xf86-video-armada-patches/
 RUN cd /sandbox/xf86-video-armada && git checkout e17e4d6db134c4be039e25fa9747882aa3091bb4 && git am /sandbox/xf86-video-armada-patches/*.patch \
 && cd debian && yes |debuild -us -uc
 
-
+RUN [ "cross-build-end" ]
 
 ## Phase 2: Regular package installs
 ################################################################################
 FROM resin/armv7hf-debian:buster
 ################################################################################
+
+RUN [ "cross-build-start" ]
 
 LABEL io.resin.device-type="apalis-imx6q"
 
@@ -73,6 +76,19 @@ ENV PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig
 RUN cd /tempPackages && dpkg -i xserver-xorg-video-armada_0.0.0-1_armhf.deb
 
 RUN rm -rf /tempPackages
-COPY xorg.conf /etc/X11/xorg.conf
+COPY xorg.conf.* /etc/X11/
+
+
+### Resin has their own custom "entry.sh"
+### It creates, modifies, and runs /etc/resinApp.sh
+
+### Add our own custom init script and systemd unit file
+COPY customApp.sh /usr/bin/customApp.sh
+RUN chmod =x /usr/bin/customApp.sh
+COPY custom-app.service /etc/systemd/system/custom-app.service
+RUN systemctl enable custom-app.service
+
 ENV DISPLAY :0
 ENV INITSYSTEM 1
+
+RUN [ "cross-build-end" ]

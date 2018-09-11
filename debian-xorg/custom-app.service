@@ -1,0 +1,13 @@
+[Unit]
+Description=Custom User Application
+
+[Service]
+EnvironmentFile=/etc/docker.env
+ExecStart=/usr/bin/customApp.sh
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/console
+Restart=on-failure
+
+[Install]
+WantedBy=basic.target

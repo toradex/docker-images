@@ -1,5 +1,7 @@
 FROM resin/armv7hf-debian:buster
 
+RUN [ "cross-build-start" ]
+
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
     apt-utils \
     && apt-mark hold dash && apt-get -y upgrade && apt-mark unhold dash \
@@ -37,3 +39,5 @@ dh-autoreconf
 
 RUN git config --global user.email "you@example.com" \
 && git config --global user.name "Han Solo"
+
+RUN [ "cross-build-end" ]
