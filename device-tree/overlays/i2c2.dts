@@ -1,0 +1,12 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "toradex,apalis_imx6q,fsl,imx6q";
+  fragment@0 {
+    target-path="/soc/aips-bus@2100000/i2c@21a4000";
+    __overlay__ {
+      status = "okay";
+    };
+  };
+};

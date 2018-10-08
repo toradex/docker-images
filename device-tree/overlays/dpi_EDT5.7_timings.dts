@@ -1,0 +1,32 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "toradex,apalis_imx6q,fsl,imx6q";
+  fragment@0 {
+    target-path = "/panel-dpi";
+    __overlay__ {
+      width-mm = <115>;
+      height-mm = <86>;
+      data-mapping = "rgb24";
+    	panel-timing {
+        clock-frequency = <25175000>;
+        hactive = <640>;
+        vactive = <480>;
+        hsync-len = <30>;
+        hfront-porch = <16>;
+        hback-porch = <114>;
+        vsync-len = <3>;
+        vfront-porch = <10>;
+        vback-porch = <32>;
+      };
+    };
+  };
+
+  fragment@1 {
+  	target-path="/disp0";
+  	__overlay__ {
+  		status="okay";
+  	};
+  };
+};
