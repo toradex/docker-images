@@ -1,4 +1,4 @@
-FROM bclouser/debian-builder AS build
+FROM torizon/debian-builder AS build
 
 RUN [ "cross-build-start" ]
 
@@ -22,7 +22,7 @@ ENV PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig
 ### Build xf86 armada module package
 RUN mkdir /sandbox/xf86-video-armada-patches
 COPY /xf86-video-armada-patches/* /sandbox/xf86-video-armada-patches/
-RUN cd /sandbox/xf86-video-armada && git checkout e17e4d6db134c4be039e25fa9747882aa3091bb4 && git am /sandbox/xf86-video-armada-patches/*.patch \
+RUN cd /sandbox/xf86-video-armada && git checkout 78e7116a5bc6cdd9f93cbf1552d342933623ab59 && git am /sandbox/xf86-video-armada-patches/*.patch \
 && cd debian && yes |debuild -us -uc
 
 RUN [ "cross-build-end" ]
