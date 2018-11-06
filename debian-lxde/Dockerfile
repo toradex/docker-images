@@ -1,4 +1,4 @@
-FROM bclouser/debian-xorg:buster
+FROM torizon/debian-xorg:buster
 
 RUN [ "cross-build-start" ]
 
